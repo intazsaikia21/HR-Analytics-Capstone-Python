@@ -1,135 +1,148 @@
-# HR-Analytics-Capstone-Python
-My project on Analytics using Python in Jupyter Notebook
-
 # HR Analytics & Employee Performance
-A Python ETL pipeline that ingests, cleans, and merges multi-source HR datasets into a single master analytics dataframe — engineering performance metrics that power HR leadership reporting and decision-making.
+
+A Python ETL pipeline that loads, cleans and merges three HR datasets into one master dataframe, then adds rule-based metrics (bonus, promotion, demotion, cost totals) for HR reporting.
 
 ![Python](https://img.shields.io/badge/Python-3.x-blue?style=flat-square&logo=python) ![Pandas](https://img.shields.io/badge/Library-Pandas%20%7C%20NumPy-green?style=flat-square) ![Jupyter](https://img.shields.io/badge/Notebook-Jupyter-orange?style=flat-square&logo=jupyter)
+
 ## Business Questions Answered
 
-1. **Project Outcomes & Financial Impact** – Which employees are linked to completed vs. failed projects, and what is the resulting financial impact?
-2. **Cost Attribution** – How does total project cost break down by employee?
-3. **Promotion Eligibility** – Which employees qualify for a designation promotion based on age and performance criteria?
-4. **Bonus Distribution** – How are bonus payouts distributed across completed projects?
-5. **Geographic Concentration** – Which city clusters have the highest concentration of project-active employees?
+1. **Project outcomes:** Which employees are linked to finished vs. failed projects?
+2. **Cost attribution:** What is the total project cost for each employee?
+3. **Promotion and demotion:** Whose designation changes, based on age and project status?
+4. **Bonus distribution:** How much bonus is paid on finished projects?
+5. **Geographic filter:** Which employees work in cities whose name contains the letter "o"?
 
-## 💡 Key Outputs Delivered
+## Key Outputs
 
 | Output | Detail |
 |---|---|
-| **Master analytics dataframe** | Single merged table across employees, projects, and seniority — ready for reporting |
-| **Bonus column engineered** | 5% of project cost applied automatically to all "Finished" status projects |
-| **Designation adjustments applied** | Employees on failed projects demoted; employees age above 29 promoted — rule-based logic |
-| **Per-Employee cost totals** | Grouped aggregation of total project spend per reporting employee |
-| **City-based employee filter** | Segment of employees by geographic cluster for regional HR planning |
+| Master dataframe | One table merging employees, projects and seniority |
+| Bonus column | 5% of project cost for projects with status "Finished" |
+| Designation changes | Failed project: designation -1. Age above 29: designation +1 |
+| Per-employee cost totals | Total project cost for each employee (grouped by ID and first name) |
+| City filter | Employees whose city name contains "o" |
 
-## 🔧 ETL Pipeline — Step by Step
+## Designation Rule
+
+Higher designation number = more senior.
+- Employees on a **failed** project are demoted: designation **-1**
+- Employees with **Age > 29** (30 and older) are promoted: designation **+1**
+
+## ETL Pipeline
+
 ```
-Raw Data (3 .xls files)
-
+Raw data (3 .xls files)
         │
         ▼
 [1] Load & Inspect
-    • Read employee.xls, project.xls, seniority.xls into DataFrames
-    • Check dtypes, null counts, shape
-
+    • Read Employee.xls, Project.xls, Seniority.xls into DataFrames
+    • Check data types, null counts, shape
         │
         ▼
 [2] Clean & Transform
-    • Fill missing Cost values using running average (for-loop logic)
-    • Split full Name into First_Name and Last_Name columns
-    • Add title prefix (Mr./Mrs.) based on Gender → drop Gender column
-    • Cast data types for consistency
-
+    • Fill missing Cost values with a running average (for-loop)
+    • Split full name into First Name and Last Name
+    • Add Mr./Mrs. prefix based on Gender, then drop Gender
         │
         ▼
 [3] Merge
     • LEFT JOIN: employees + projects on employee ID
-    • LEFT JOIN: merged df + seniority on employee ID
-    • Result: single master dataframe
-
+    • LEFT JOIN: result + seniority on employee ID
+    • Result: master dataframe (Final)
         │
         ▼
 [4] Feature Engineering
     • Bonus = 5% of Cost WHERE Status = 'Finished'
-    • Designation += 1 WHERE Status = 'Failed' (demotion)
-    • Designation -= 1 WHERE Age > 29 (promotion)
-    • Total_Project_Cost = SUM(Cost) GROUP BY Manager
-
+    • Designation -= 1 WHERE Status = 'Failed'
+    • Designation += 1 WHERE Age > 29
+    • Total Cost = SUM(Cost) GROUP BY ID, First Name
         │
         ▼
-[5] Output
-    • Final master dataframe exported to CSV
-    • Jupyter Notebook with inline commentary for stakeholder review
-```    
+[5] Filter
+    • Employees whose city name contains 'o'
+```
+
 ## Tasks Completed
 
 | # | Task | Technique |
 |---|---|---|
-| 1 | Created 3 DataFrames from raw XLS files | `pd.read_excel()` |
+| 1 | Created 3 DataFrames from the raw XLS files | `pd.read_excel()` |
 | 2 | Filled missing cost values | Running average loop |
-| 3 | Split full name into First/Last | `str.split()`, column assignment |
-| 4 | Merged all 3 DataFrames into master | `pd.merge()` (LEFT JOIN) |
-| 5 | Added bonus column (5% for finished projects) | `np.where()`, conditional assignment |
-| 6 | Demoted designation for failed project employees | Boolean mask + in-place update |
-| 7 | Added Mr./Mrs. prefix, dropped Gender column | `np.where()`, `df.drop()` |
-| 8 | Promoted designation for employees age above 29 | Conditional logic |
+| 3 | Split full name into First and Last name | `str.split()` |
+| 4 | Merged the 3 DataFrames into one master | `pd.merge()` (LEFT JOIN) |
+| 5 | Added bonus column (5% for finished projects) | `np.where()` |
+| 6 | Demoted designation for failed projects | Boolean mask + `.loc` update |
+| 7 | Added Mr./Mrs. prefix and dropped Gender | `np.where()`, `df.drop()` |
+| 8 | Promoted designation for employees aged over 29 | Boolean mask + `.loc` update |
 | 9 | Computed total project cost per employee | `groupby().sum()` |
 | 10 | Filtered employees by city name containing 'o' | `str.contains()` |
 
-## 📁 Repository Structure
-
-```
-Python-Project/
-├── HR Employee Project data Analytics.ipynb   # Full annotated Jupyter Notebook
-├── Employee.xls                               # Raw employee demographics data
-├── Project.xls                                # Raw project assignments data
-├── Seniority.xls                              # Seniority/designation level data
-└── README.md
-```
-## 💻 Sample Code
+## Sample Code
 
 ```python
 import pandas as pd
 import numpy as np
 
-# Add bonus column: 5% of project cost for finished projects only
-master_df['Bonus'] = np.where(
-    master_df['Status'] == 'Finished',
-    master_df['Cost'] * 0.05,
-    0
-)
+# Bonus: 5% of project cost for finished projects only
+Final['Bonus'] = np.where(Final['Status'] == 'Finished', Final['Cost'] * 0.05, 0)
 
-# Demotion: reduce designation level for failed projects
-master_df.loc[master_df['Status'] == 'Failed', 'Designation'] -= 1
+# Demotion: failed projects
+Final.loc[Final['Status'] == 'Failed', 'Designation'] -= 1
 
-# Promotion: increase designation level for employees aged over 29
-master_df.loc[master_df['Age'] > 29, 'Designation'] += 1
+# Promotion: employees aged over 29
+Final.loc[Final['Age'] > 29, 'Designation'] += 1
 
-# Total project cost
+# Total project cost per employee
 TotalProjCost = Final.groupby(["ID", "First Name"])["Cost"].sum().reset_index()
 TotalProjCost = TotalProjCost.rename(columns={"Cost": "Total Cost"})
 ```
-## 🛠 Tools & Libraries Used
+
+## Repository Structure
+
+```
+HR-Analytics-Capstone-Python/
+├── HR Employee Project data Analytics.ipynb   # Annotated Jupyter Notebook
+├── Employee.xls                               # Employee details
+├── Project.xls                                # Project assignments and costs
+├── Seniority.xls                              # Designation levels
+└── README.md
+```
+
+## How to Run
+
+1. Install the libraries:
+   ```
+   pip install pandas numpy xlrd jupyter
+   ```
+2. Keep `Employee.xls`, `Project.xls` and `Seniority.xls` in the same folder as the notebook.
+3. Open `HR Employee Project data Analytics.ipynb` in Jupyter.
+4. Run **Kernel → Restart & Run All**. The tasks run in order, 1 to 10.
+
+## Data
+
+| File | Rows | Columns | Source |
+|---|---|---|---|
+| Employee.xls | [X] | [X] | [add source] |
+| Project.xls | [X] | [X] | [add source] |
+| Seniority.xls | [X] | [X] | [add source] |
+
+## Sample Output
+
+[Paste a small table or screenshot of `TotalProjCost` here]
+
+## Tools & Libraries
 
 | Tool | Purpose |
 |---|---|
-| Python 3.x | Core scripting language |
+| Python 3.x | Core language |
 | Pandas | DataFrames, merging, groupby, filtering |
 | NumPy | Conditional column logic (`np.where`) |
-| Jupyter Notebook | Annotated, interactive analysis environment |
-| XLS / CSV | Input and output file formats |
+| xlrd | Reading `.xls` files |
+| Jupyter Notebook | Annotated, interactive analysis |
 
----
+## Skills Demonstrated
 
-## 🎓 Skills Demonstrated
-
-- **Multi-Source ETL Pipeline Design** – Architected pipelines to ingest and unify data from multiple disparate HR sources.
-- **Data Cleaning** – Handled null values, corrected data types, and resolved duplicate records to ensure dataset integrity.
-- **Feature Engineering** – Derived custom performance metrics using conditional logic and business rules.
-- **Aggregation & Segmentation** – Computed per-group cost totals and applied segment-level filtering for targeted analysis.
-- **Documentation** – Wrote clear inline commentary suitable for handoff to non-technical stakeholders.
-
----
-
-    
+- **Multi-source data integration:** merged three separate HR files into one table
+- **Data cleaning:** filled missing values, split name fields, fixed formats
+- **Feature engineering:** built bonus, promotion and demotion columns from business rules
+- **Aggregation and filtering:** grouped cost totals and filtered by text patterns
