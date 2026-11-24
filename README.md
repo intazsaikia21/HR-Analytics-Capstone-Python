@@ -20,7 +20,7 @@ A Python ETL pipeline that ingests, cleans, and merges multi-source HR datasets 
 | **Master analytics dataframe** | Single merged table across employees, projects, and seniority — ready for reporting |
 | **Bonus column engineered** | 5% of project cost applied automatically to all "Finished" status projects |
 | **Designation adjustments applied** | Employees on failed projects demoted; employees age above 29 promoted — rule-based logic |
-| **Per-Employee cost totals** | Grouped aggregation of total project spend per reporting manager |
+| **Per-Employee cost totals** | Grouped aggregation of total project spend per reporting employee |
 | **City-based employee filter** | Segment of employees by geographic cluster for regional HR planning |
 
 ## 🔧 ETL Pipeline — Step by Step
@@ -73,7 +73,7 @@ Raw Data (3 .xls files)
 | 5 | Added bonus column (5% for finished projects) | `np.where()`, conditional assignment |
 | 6 | Demoted designation for failed project employees | Boolean mask + in-place update |
 | 7 | Added Mr./Mrs. prefix, dropped Gender column | `np.where()`, `df.drop()` |
-| 8 | Promoted designation for employees aged 29+ | Conditional logic |
+| 8 | Promoted designation for employees age above 29 | Conditional logic |
 | 9 | Computed total project cost per employee | `groupby().sum()` |
 | 10 | Filtered employees by city name containing 'o' | `str.contains()` |
 
