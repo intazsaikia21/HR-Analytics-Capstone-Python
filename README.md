@@ -8,7 +8,7 @@ A Python ETL pipeline that ingests, cleans, and merges multi-source HR datasets 
 ## Business Questions Answered
 
 1. **Project Outcomes & Financial Impact** – Which employees are linked to completed vs. failed projects, and what is the resulting financial impact?
-2. **Cost Attribution** – How does total project cost break down by manager?
+2. **Cost Attribution** – How does total project cost break down by employee?
 3. **Promotion Eligibility** – Which employees qualify for a designation promotion based on age and performance criteria?
 4. **Bonus Distribution** – How are bonus payouts distributed across completed projects?
 5. **Geographic Concentration** – Which city clusters have the highest concentration of project-active employees?
@@ -52,8 +52,8 @@ Raw Data (3 .xls files)
         ▼
 [4] Feature Engineering
     • Bonus = 5% of Cost WHERE Status = 'Finished'
-    • Designation -= 1 WHERE Status = 'Failed' (demotion)
-    • Designation += 1 WHERE Age > 29 (promotion)
+    • Designation += 1 WHERE Status = 'Failed' (demotion)
+    • Designation -= 1 WHERE Age > 29 (promotion)
     • Total_Project_Cost = SUM(Cost) GROUP BY Manager
 
         │
