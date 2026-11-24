@@ -129,6 +129,7 @@ HR-Analytics-Capstone-Python/
 Source: Skillovilla
 
 ## Sample Output
+### Total Project Cost
 | ID   | First Name   |   Total Cost |
 |:-----|:-------------|-------------:|
 | A001 | Mr. John     | 5,212,312.50 |
