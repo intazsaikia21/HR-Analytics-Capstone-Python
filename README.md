@@ -12,7 +12,7 @@ A Python ETL pipeline that loads, cleans and merges three HR datasets into one m
 4. **Bonus distribution:** How much bonus is paid on finished projects?
 5. **Geographic filter:** Which employees work in cities whose name contains the letter "o"?
 
-## Key Outputs
+## 💡 Key Outputs
 
 | Output | Detail |
 |---|---|
@@ -28,7 +28,7 @@ Higher designation number = more senior.
 - Employees on a **failed** project are demoted: designation **-1**
 - Employees with **Age > 29** (30 and older) are promoted: designation **+1**
 
-## ETL Pipeline
+## 🔧 ETL Pipeline
 
 ```
 Raw data (3 .xls files)
@@ -77,7 +77,7 @@ Raw data (3 .xls files)
 | 9 | Computed total project cost per employee | `groupby().sum()` |
 | 10 | Filtered employees by city name containing 'o' | `str.contains()` |
 
-## Sample Code
+## 💻 Sample Code
 
 ```python
 import pandas as pd
@@ -97,7 +97,7 @@ TotalProjCost = Final.groupby(["ID", "First Name"])["Cost"].sum().reset_index()
 TotalProjCost = TotalProjCost.rename(columns={"Cost": "Total Cost"})
 ```
 
-## Repository Structure
+## 📁 Repository Structure
 
 ```
 HR-Analytics-Capstone-Python/
@@ -108,7 +108,7 @@ HR-Analytics-Capstone-Python/
 └── README.md
 ```
 
-## How to Run
+## ⚙️ How to Run
 
 1. Install the libraries:
    ```
@@ -118,19 +118,7 @@ HR-Analytics-Capstone-Python/
 3. Open `HR Employee Project data Analytics.ipynb` in Jupyter.
 4. Run **Kernel → Restart & Run All**. The tasks run in order, 1 to 10.
 
-## Data
-
-| File | Rows | Columns | Source |
-|---|---|---|---|
-| Employee.xls | [X] | [X] | [add source] |
-| Project.xls | [X] | [X] | [add source] |
-| Seniority.xls | [X] | [X] | [add source] |
-
-## Sample Output
-
-[Paste a small table or screenshot of `TotalProjCost` here]
-
-## Tools & Libraries
+## 🛠 Tools & Libraries
 
 | Tool | Purpose |
 |---|---|
@@ -140,7 +128,7 @@ HR-Analytics-Capstone-Python/
 | xlrd | Reading `.xls` files |
 | Jupyter Notebook | Annotated, interactive analysis |
 
-## Skills Demonstrated
+## 🎓 Skills Demonstrated
 
 - **Multi-source data integration:** merged three separate HR files into one table
 - **Data cleaning:** filled missing values, split name fields, fixed formats
