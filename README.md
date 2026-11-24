@@ -145,7 +145,6 @@ Source: Skillovilla
 | Python 3.x | Core language |
 | Pandas | DataFrames, merging, groupby, filtering |
 | NumPy | Conditional column logic (`np.where`) |
-| xlrd | Reading `.xls` files |
 | Jupyter Notebook | Annotated, interactive analysis |
 
 ## 🎓 Skills Demonstrated
