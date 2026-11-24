@@ -106,9 +106,9 @@ master_df.loc[master_df['Status'] == 'Failed', 'Designation'] -= 1
 # Promotion: increase designation level for employees aged over 29
 master_df.loc[master_df['Age'] > 29, 'Designation'] += 1
 
-# Per-manager total project cost
-manager_cost = master_df.groupby('Manager')['Cost'].sum().reset_index()
-manager_cost.columns = ['Manager', 'Total_Project_Cost']
+# Total project cost
+TotalProjCost = Final.groupby(["ID", "First Name"])["Cost"].sum().reset_index()
+TotalProjCost = TotalProjCost.rename(columns={"Cost": "Total Cost"})
 ```
 ## 🛠 Tools & Libraries Used
 
