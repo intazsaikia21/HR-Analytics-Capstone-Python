@@ -131,11 +131,11 @@ Source: Skillovilla
 ## Sample Output
 | ID   | First Name   |   Total Cost |
 |:-----|:-------------|-------------:|
-| A001 | Mr. John     |  5.21231e+06 |
-| A002 | Mrs. Alice   |  2.68e+06    |
-| A003 | Mr. Tom      |  5.15e+06    |
-| A004 | Mrs. Nina    |  9.5e+06     |
-| A005 | Mrs. Amy     |  3.8505e+06  |
+| A001 | Mr. John     | 5,212,312.50 |
+| A002 | Mrs. Alice   | 2,680,000.00 |
+| A003 | Mr. Tom      | 5,150,000.00 |
+| A004 | Mrs. Nina    | 9,500,000.00 |
+| A005 | Mrs. Amy     | 3,850,500.00 |
 
 ## 🛠 Tools & Libraries
 
