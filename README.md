@@ -118,6 +118,25 @@ HR-Analytics-Capstone-Python/
 3. Open `HR Employee Project data Analytics.ipynb` in Jupyter.
 4. Run **Kernel → Restart & Run All**. The tasks run in order, 1 to 10.
 
+## Data
+
+| File | Rows | Columns | Fields |
+|---|---|---|---|
+| Employee.xls | 5 | 6 | ID, Gender, City, Age, First Name, Last Name |
+| Project.xls | 14 | 4 | ID, Project, Cost, Status |
+| Seniority.xls | 5 | 2 | ID, Designation Level |
+
+Source: Skillovilla
+
+## Sample Output
+| ID   | First Name   |   Total Cost |
+|:-----|:-------------|-------------:|
+| A001 | Mr. John     |  5.21231e+06 |
+| A002 | Mrs. Alice   |  2.68e+06    |
+| A003 | Mr. Tom      |  5.15e+06    |
+| A004 | Mrs. Nina    |  9.5e+06     |
+| A005 | Mrs. Amy     |  3.8505e+06  |
+
 ## 🛠 Tools & Libraries
 
 | Tool | Purpose |
